@@ -17,6 +17,7 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<Tab>('studio');
   const [panels, setPanels] = useState<Panel[]>([]);
   const [stagingPanel, setStagingPanel] = useState<Panel | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [inputText, setInputText] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const vaultTopRef = useRef<HTMLDivElement>(null);
@@ -223,6 +224,13 @@ export default function Home() {
                     {/* Action Buttons */}
                     <div className="flex flex-wrap md:flex-nowrap gap-2 z-50 w-full md:w-auto justify-end">
                       <button 
+                        onClick={() => setPreviewImage(stagingPanel.image_url)}
+                        className="comic-btn px-3 py-2 bg-blue-400 rounded text-base md:text-xl flex-1 md:flex-none"
+                        title="Preview"
+                      >
+                        👁️
+                      </button>
+                      <button 
                         onClick={() => handleDownload(stagingPanel)}
                         className="comic-btn px-3 py-2 bg-white rounded text-base md:text-xl flex-1 md:flex-none"
                         title="Download"
@@ -318,6 +326,13 @@ export default function Home() {
                   {/* Hover Actions for Saved Panels (Always visible on mobile) */}
                   <div className="absolute top-2 right-2 md:top-3 md:right-3 flex gap-2 md:opacity-0 group-hover:opacity-100 transition-opacity z-50">
                     <button 
+                      onClick={() => setPreviewImage(panel.image_url)}
+                      className="comic-btn bg-blue-400 px-2 py-1 md:px-3 md:py-2 rounded text-sm md:text-lg"
+                      title="Preview"
+                    >
+                      👁️
+                    </button>
+                    <button 
                       onClick={() => handleDownload(panel)}
                       className="comic-btn bg-white px-2 py-1 md:px-3 md:py-2 rounded text-sm md:text-lg"
                       title="Download"
@@ -336,6 +351,29 @@ export default function Home() {
               ))}
             </div>
 
+          </div>
+        )}
+
+        {/* FULL SCREEN IMAGE PREVIEW MODAL */}
+        {previewImage && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-gray-900/90 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+            {/* Massive X Close Button */}
+            <button
+              onClick={() => setPreviewImage(null)}
+              className="absolute top-6 right-6 comic-btn comic-btn-red w-14 h-14 rounded-full flex items-center justify-center text-3xl z-50"
+              title="Close Preview"
+            >
+              ❌
+            </button>
+            
+            {/* The Image Wrapper with Comic Border */}
+            <div className="relative max-w-full max-h-[90vh] bg-white border-[6px] border-gray-900 shadow-[12px_12px_0px_rgba(249,115,22,1)] rounded-xl overflow-hidden animate-in zoom-in-95 duration-300">
+              <img 
+                src={previewImage} 
+                alt="Full Screen Preview" 
+                className="w-auto h-auto max-w-[90vw] max-h-[85vh] object-contain block" 
+              />
+            </div>
           </div>
         )}
 

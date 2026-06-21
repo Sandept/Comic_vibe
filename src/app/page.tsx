@@ -158,7 +158,7 @@ export default function Home() {
             C!
           </div>
           <h1 className="text-2xl md:text-3xl font-black tracking-tighter text-white uppercase" style={{ textShadow: '3px 3px 0px #111827' }}>
-            Comic·Vibe
+            Comic · Vibe
           </h1>
         </div>
 
@@ -178,7 +178,7 @@ export default function Home() {
               activeTab === 'vault' ? 'comic-btn-yellow bg-yellow-400' : 'bg-white'
             }`}
           >
-            Database Vault
+            Database
           </button>
         </div>
 
@@ -241,7 +241,7 @@ export default function Home() {
                         onClick={handleSaveStaging}
                         className="comic-btn comic-btn-orange px-4 py-2 rounded text-sm md:text-lg flex-1 md:flex-none"
                       >
-                        💾 Publish!
+                        💾 Save DB!
                       </button>
                       <button 
                         onClick={handleCloseStaging}

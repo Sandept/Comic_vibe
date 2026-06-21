@@ -20,31 +20,38 @@ export async function POST(request: Request) {
 
     let base64Image: string;
 
-    try {
-      const response = await fetch(
-        "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0",
-        {
-          headers: {
-            Authorization: `Bearer ${hfApiKey}`,
-            "Content-Type": "application/json",
-          },
-          method: "POST",
-          body: JSON.stringify({ inputs: enhancedPrompt }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Hugging Face API Error: ${await response.text()}`);
+    const response = await fetch(
+      "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0",
+      {
+        headers: {
+          Authorization: `Bearer ${hfApiKey}`,
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({ inputs: enhancedPrompt }),
       }
+    );
 
-      const blob = await response.blob();
-      const arrayBuffer = await blob.arrayBuffer();
-      const buffer = Buffer.from(arrayBuffer);
-      base64Image = `data:${blob.type};base64,${buffer.toString('base64')}`;
-    } catch (fetchError) {
-      console.warn("Network error reaching AI, falling back to placeholder:", fetchError);
-      base64Image = `https://picsum.photos/seed/${Math.floor(Math.random() * 1000)}/800/800`;
+    if (!response.ok) {
+      const errorText = await response.text();
+      let errorMessage = "Hugging Face API Error";
+      try {
+        const errorJson = JSON.parse(errorText);
+        if (errorJson.error && errorJson.error.includes("currently loading")) {
+          errorMessage = `The AI Model is waking up! Please wait ${Math.ceil(errorJson.estimated_time || 20)} seconds and hit DRAW again.`;
+        } else {
+          errorMessage = errorJson.error || errorText;
+        }
+      } catch (e) {
+        errorMessage = errorText;
+      }
+      throw new Error(errorMessage);
     }
+
+    const blob = await response.blob();
+    const arrayBuffer = await blob.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    base64Image = `data:${blob.type};base64,${buffer.toString('base64')}`;
 
     return NextResponse.json({ 
       panel: {
@@ -55,8 +62,8 @@ export async function POST(request: Request) {
       } 
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('API Error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });
   }
 }

@@ -20,32 +20,12 @@ export async function POST(request: Request) {
 
     let base64Image: string;
 
-    const response = await fetch(
-      "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0",
-      {
-        headers: {
-          Authorization: `Bearer ${hfApiKey}`,
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify({ inputs: enhancedPrompt }),
-      }
-    );
+    // Using Pollinations AI because Vercel's strict 10-second timeout kills Hugging Face requests.
+    const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(enhancedPrompt)}?width=800&height=800&nologo=true&seed=${Math.floor(Math.random() * 1000000)}`;
+    const response = await fetch(url);
 
     if (!response.ok) {
-      const errorText = await response.text();
-      let errorMessage = "Hugging Face API Error";
-      try {
-        const errorJson = JSON.parse(errorText);
-        if (errorJson.error && errorJson.error.includes("currently loading")) {
-          errorMessage = `The AI Model is waking up! Please wait ${Math.ceil(errorJson.estimated_time || 20)} seconds and hit DRAW again.`;
-        } else {
-          errorMessage = errorJson.error || errorText;
-        }
-      } catch (e) {
-        errorMessage = errorText;
-      }
-      throw new Error(errorMessage);
+      throw new Error(`AI Generation Error: ${await response.text()}`);
     }
 
     const blob = await response.blob();

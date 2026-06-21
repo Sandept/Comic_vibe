@@ -1,5 +1,4 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/Sandept/Comic_vibe/main/public/next.svg" width="100" alt="Logo" />
   <h1>💥 COMIC VIBE 💥</h1>
   <p><strong>An infinite, real-time AI comic book generator.</strong></p>
 

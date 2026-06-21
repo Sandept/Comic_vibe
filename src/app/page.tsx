@@ -158,7 +158,7 @@ export default function Home() {
             C!
           </div>
           <h1 className="text-2xl md:text-3xl font-black tracking-tighter text-white uppercase" style={{ textShadow: '3px 3px 0px #111827' }}>
-            ComicVibe
+            Comic_Vibe
           </h1>
         </div>
 

@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fffaf0; /* Creamy off-white paper color */
+  --foreground: #111827; /* Dark almost-black text */
+  
+  --primary: #f97316; /* Orange-500 */
+  --secondary: #eab308; /* Yellow-500 */
+  --accent: #ef4444; /* Red-500 */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-outfit), "Comic Sans MS", "Marker Felt", sans-serif;
+  overflow: hidden; /* Prevent body scroll */
+}
+
+/* Classic Comic Halftone Background */
+.halftone-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background-color: #fffaf0;
+  /* Dotted halftone pattern using radial-gradient */
+  background-image: radial-gradient(#fbbf24 1px, transparent 1px);
+  background-size: 14px 14px;
+  opacity: 0.4;
+}
+
+/* Comic Book Navigation Bar */
+.comic-nav {
+  background-color: #f97316; /* Orange */
+  border-bottom: 4px solid #111827;
+  box-shadow: 0 4px 0px #111827;
+}
+
+/* Classic Comic Panel */
+.comic-panel-classic {
+  position: relative;
+  background-color: #fff;
+  border: 4px solid #111827;
+  overflow: hidden;
+  box-shadow: 8px 8px 0px #111827;
+  transition: all 0.2s ease-in-out;
+}
+
+.comic-panel-classic:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 12px 12px 0px #111827;
+}
+
+.comic-panel-classic img {
+  transition: transform 0.5s ease;
+}
+
+.comic-panel-classic:hover img {
+  transform: scale(1.05);
+}
+
+/* Comic Text Bubble */
+.comic-text-classic {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
+  padding: 12px 16px;
+  background-color: #fff;
+  border: 3px solid #111827;
+  color: #111827;
+  font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+  box-shadow: 4px 4px 0px #111827;
+  text-transform: uppercase;
+  z-index: 10;
+}
+
+/* Comic Action Button */
+.comic-btn {
+  background-color: var(--secondary);
+  border: 3px solid #111827;
+  color: #111827;
+  font-weight: 900;
+  text-transform: uppercase;
+  box-shadow: 4px 4px 0px #111827;
+  transition: all 0.1s;
+}
+
+.comic-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #111827;
+}
+
+.comic-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px #111827;
+}
+
+.comic-btn-red {
+  background-color: var(--accent);
+  color: #fff;
+}
+
+.comic-btn-orange {
+  background-color: var(--primary);
+  color: #fff;
+}
+
+/* Custom Scrollbar for Vault */
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: #fffaf0;
+  border-left: 3px solid #111827;
+}
+::-webkit-scrollbar-thumb {
+  background: #f97316;
+  border: 3px solid #111827;
+}
